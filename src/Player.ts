@@ -85,9 +85,9 @@ export class Player {
     }
   }
 
-  private shouldFold(bets: number[], allCards: number[], tableCards: number[], communityCards: number[], myCards: number[] ): boolean {
+  private shouldFold(bets: number[], allCards: number[], tableCards: number[], communityCards: number[], myCards: number[], myStack: number): boolean {
     const maxBet = Math.max(...bets);
-    if (maxBet > 100
+    if (maxBet > (myStack / 3 * 2)
         && !(this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards))
         && !(this.detectPoker(allCards) && !this.detectPoker(tableCards))
         && !(this.detectFlush([...communityCards, ...myCards]))
