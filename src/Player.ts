@@ -115,6 +115,16 @@ export class Player {
     return false;
   }
 
+  private bleoff(gameState: any): boolean {
+    const player = gameState.players.find(p => p.name === 'player')
+    if (gameState.round === 3 && player.status === 'player') {
+      if (Math.random() < 0.6) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private cardToValue(card: any): number {
     switch (card.rank) {
       case "A":
