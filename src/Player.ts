@@ -102,7 +102,7 @@ export class Player {
       } else {
         return 0;
       }
-    } else if (value > 25 && gameState.pot <= myPlayer.stack) {
+    } else if (value > 25 && gameState.pot <= myPlayer.stack && !this.tooHighBet(gameState, myPlayer)) {
       return 0;
     } else {
       return -1;
