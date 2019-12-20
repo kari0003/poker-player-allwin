@@ -5,9 +5,14 @@ export class Player {
     //   betCallback(0);
     // } else {
     const bet = myPlayer ? myPlayer["bet"] : 0;
-    betCallback(
-      gameState.current_buy_in - bet + this.calculateRaise(gameState)
-    );
+    const raise = this.calculateRaise(gameState);
+    if (raise < 0) {
+      betCallback(0);
+    } else {
+      betCallback(
+        gameState.current_buy_in - bet + raise
+      );
+    }
     // }
   }
 
@@ -55,6 +60,9 @@ export class Player {
     }
     if (value > 25) {
       return 42;
+    }
+    if (value < 10) {
+      return -1;
     }
 
     return 1;
