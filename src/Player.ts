@@ -31,6 +31,9 @@ export class Player {
     if (gameState.round > 0 && myBet === 1) {
       raise = 0;
     }
+    if (myBet < 0) {
+      raise = myBet;
+    }
     return raise;
   }
 
