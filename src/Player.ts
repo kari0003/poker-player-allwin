@@ -4,19 +4,17 @@ export class Player {
     // if (gameState.current_buy_in > 600) {
     //   betCallback(0);
     // } else {
-    const bet = myPlayer ? myPlayer["bet"] : 0;
+    const bet = myPlayer ? myPlayer['bet'] : 0;
     const raise = this.calculateRaise(gameState);
     if (raise < 0) {
       betCallback(0);
     } else {
-      betCallback(
-        gameState.current_buy_in - bet + raise
-      );
+      betCallback(gameState.current_buy_in - bet + raise);
     }
     // }
   }
 
-  public showdown(gameState: any): void { }
+  public showdown(gameState: any): void {}
 
   public calculateRaise(gameState: any): number {
     const minRaise = gameState.minimum_raise;
@@ -30,7 +28,7 @@ export class Player {
   }
 
   private calculateBet(myPlayer: any, gameState: any): number {
-    const communityCards = myPlayer["community_cards"] || [];
+    const communityCards = gameState['community_cards'] || [];
     const communityCardsValues: number[] = communityCards.map(this.cardToValue);
     const communityCardsValue = communityCardsValues.reduce(
       (val, curr) => val + curr,
@@ -41,7 +39,14 @@ export class Player {
       0
     );
 
-    const myCards = myPlayer["hole_cards"];
+    const myCards = myPlayer['hole_cards'] || [];
+    const myCardsValue = myCards.map(this.cardToValue);
+    const allCards = this.orderCards([
+      ...communityCardsValues,
+      ...myCardsValue
+    ]);
+    const tableCards = this.orderCards(communityCardsValues);
+
     const value = this.cardToValue(myCards[0]) + this.cardToValue(myCards[1]);
     const diff = Math.abs(
       this.cardToValue(myCards[0]) - this.cardToValue(myCards[1])
@@ -65,13 +70,13 @@ export class Player {
 
   private cardToValue(card: any): number {
     switch (card.rank) {
-      case "A":
+      case 'A':
         return 20;
-      case "K":
+      case 'K':
         return 15;
-      case "Q":
+      case 'Q':
         return 14;
-      case "J":
+      case 'J':
         return 12;
       default:
         return parseInt(card.rank, 10);
@@ -97,11 +102,35 @@ export class Player {
 
   private detectPoker(cards: number[]): boolean {
     cards.forEach((card, index) => {
-      if (cards[index + 1] && cards[index + 2] && cards[index + 3] && card === cards[index + 1] && card === cards[index + 2] && card === cards[index + 3]) {
+      if (
+        cards[index + 1] &&
+        cards[index + 2] &&
+        cards[index + 3] &&
+        card === cards[index + 1] &&
+        card === cards[index + 2] &&
+        card === cards[index + 3]
+      ) {
         return true;
       }
-    })
+    });
     return false;
+  }
+
+  private cardSuit(card: any): number {
+    switch (card.suite) {
+      case 'spades':
+        return 0;
+      case 'hearts':
+        return 1;
+      case 'diamonds':
+        return 2;
+      case 'clubs':
+        return 3;
+    }
+  }
+
+  private orderCards(cards = []) {
+    return cards.sort((a, b) => a - b);
   }
 }
 

@@ -32,11 +32,30 @@ curl -d 'action=bet_request&game_state={
   "tournament_id":"550d1d68cd7bd10003000003",
   "game_id":"550da1cb2d909006e90004b1",
   "round":0,
+  "community_cards": [
+    {
+        "rank": "8",
+        "suit": "hearts"
+    },
+    {
+        "rank": "K",
+        "suit": "spades"
+    }
+  ],
   "bet_index":0,
   "small_blind":10,
   "orbits":0,
   "dealer":0,
-  "community_cards":[],
+  "community_cards":[
+    {
+        "rank": "8",
+        "suit": "hearts"
+    },
+    {
+        "rank": "K",
+        "suit": "spades"
+    }
+  ],
   "current_buy_in":0,
   "in_action": 1,
   "pot":0
