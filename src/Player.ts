@@ -73,6 +73,9 @@ export class Player {
     } else if (this.detectDrill(allCards) && !this.detectDrill(tableCards)) {
       return 30;
     } else if (this.detectTwoPairs(allCards)) {
+      if (value < 24 && this.tooHighBet(gameState, myPlayer)) {
+        return -1;
+      }
       if (diff === 0) {
         if (value >= 18 && gameState.minimum_raise <= myPlayer.stack) {
           return 30;
@@ -86,9 +89,7 @@ export class Player {
       if (
         allCards.length === 2 &&
         value < 24 &&
-        (gameState.minimum_raise > myPlayer.stack / 2 ||
-          gameState.minimum_raise > 50 ||
-          gameState.pot > 1500)
+        this.tooHighBet(gameState, myPlayer)
       ) {
         return -1;
       }
@@ -106,6 +107,14 @@ export class Player {
     } else {
       return -1;
     }
+  }
+
+  private tooHighBet(gameState: any, myPlayer: any): boolean {
+    return (
+      gameState.minimum_raise > myPlayer.stack / 2 ||
+      gameState.minimum_raise > 50 ||
+      gameState.pot > 1500
+    );
   }
 
   private shouldFold(
@@ -129,8 +138,8 @@ export class Player {
   }
 
   private bleoff(gameState: any): boolean {
-    const player = gameState.players.find(p => p.name === 'player');
-    if (gameState.round === 3 && player.status === 'player') {
+    const player = gameState.players.find(p => p.name === "player");
+    if (gameState.round === 3 && player.status === "player") {
       if (Math.random() < 0.6) {
         return true;
       }
@@ -140,16 +149,20 @@ export class Player {
 
   private handleAllIn(
     players: any,
-    bets:number[],
+    bets: number[],
     limit: number,
     allCards: number[],
     tableCards: number[],
     community_cards: number[],
-    myCards: number[],
-    ): boolean {
-    const player = players.find(p => p.name === 'player');
+    myCards: number[]
+  ): boolean {
+    const player = players.find(p => p.name === "player");
     const maxBet = Math.max(...bets);
-    if (player.status === 'active' && maxBet > limit && !(this.hasGoodStuff(allCards, tableCards, community_cards, myCards))) {
+    if (
+      player.status === "active" &&
+      maxBet > limit &&
+      !this.hasGoodStuff(allCards, tableCards, community_cards, myCards)
+    ) {
       return false;
     }
     return true;
@@ -160,17 +173,16 @@ export class Player {
     tableCards: number[],
     communityCards: number[],
     myCards: number[]
+  ) {
+    if (
+      (this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards)) ||
+      (this.detectPoker(allCards) && !this.detectPoker(tableCards)) ||
+      this.detectFlush([...communityCards, ...myCards])
     ) {
-      if
-      (
-        (this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards)) ||
-        (this.detectPoker(allCards) && !this.detectPoker(tableCards)) ||
-        (this.detectFlush([...communityCards, ...myCards]))
-        ) {
-        return true;
-      }
-      return false;
+      return true;
     }
+    return false;
+  }
 
   private cardToValue(card: any): number {
     switch (card.rank) {
