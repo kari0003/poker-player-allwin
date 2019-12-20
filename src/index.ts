@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Player } from './Player';
 
-const VERSION = "Sziasztok5";
+const VERSION = "Sziasztok6";
 
 const app = express();
 const player = new Player();

@@ -13,8 +13,8 @@ export class Player {
 
   public calculateRaise(gameState: any): number {
     let raise = gameState.minimum_raise;
-    if (!raise || raise < 50) {
-      raise = 50;
+    if (!raise || raise < 20) {
+      raise = 20;
     }
     return raise;
   }
