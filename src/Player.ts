@@ -1,9 +1,16 @@
 export class Player {
   public betRequest(gameState: any, betCallback: (bet: number) => void): void {
     const myPlayer = gameState.players[gameState.in_action];
-    const bet = myPlayer ? myPlayer['bet'] : 0;
+    const bet = myPlayer ? myPlayer["bet"] : 0;
     const raise = this.calculateRaise(gameState);
-    if (raise < 0) {
+    if (gameState.round === 0 && gameState.bet_index === 0) {
+      let begin = raise;
+      const blind = gameState.small_blind || gameState.big_blind;
+      if (raise < blind) {
+        begin = blind;
+      }
+      betCallback(begin);
+    } else if (raise < 0) {
       betCallback(0);
     } else {
       betCallback(gameState.current_buy_in - bet + raise);
@@ -24,7 +31,7 @@ export class Player {
   }
 
   private calculateBet(myPlayer: any, gameState: any): number {
-    const communityCards = gameState['community_cards'] || [];
+    const communityCards = gameState["community_cards"] || [];
     const communityCardsValues: number[] = communityCards.map(this.cardToValue);
     const communityCardsValue = communityCardsValues.reduce(
       (val, curr) => val + curr,
@@ -35,7 +42,7 @@ export class Player {
       0
     );
 
-    const myCards = myPlayer['hole_cards'] || [];
+    const myCards = myPlayer["hole_cards"] || [];
     const myCardsValue = myCards.map(this.cardToValue);
     const allCards = this.orderCards([
       ...communityCardsValues,
@@ -57,8 +64,11 @@ export class Player {
     if (this.detectPoker(allCards) && !this.detectPoker(tableCards)) {
       return myPlayer.stack;
     } else if (this.detectFlush([...communityCards, ...myCards])) {
-       return 50;
-    } else if (this.detectNumberSeries(allCards) && !this.detectNumberSeries(tableCards)) {
+      return 50;
+    } else if (
+      this.detectNumberSeries(allCards) &&
+      !this.detectNumberSeries(tableCards)
+    ) {
       return 30;
     } else if (this.detectDrill(allCards) && !this.detectDrill(tableCards)) {
       return 30;
@@ -85,13 +95,21 @@ export class Player {
     }
   }
 
-  private shouldFold(bets: number[], allCards: number[], tableCards: number[], communityCards: number[], myCards: number[], myStack: number): boolean {
+  private shouldFold(
+    bets: number[],
+    allCards: number[],
+    tableCards: number[],
+    communityCards: number[],
+    myCards: number[],
+    myStack: number
+  ): boolean {
     const maxBet = Math.max(...bets);
-    if (maxBet > (myStack / 3 * 2)
-        && !(this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards))
-        && !(this.detectPoker(allCards) && !this.detectPoker(tableCards))
-        && !(this.detectFlush([...communityCards, ...myCards]))
-        ) {
+    if (
+      maxBet > (myStack / 3) * 2 &&
+      !(this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards)) &&
+      !(this.detectPoker(allCards) && !this.detectPoker(tableCards)) &&
+      !this.detectFlush([...communityCards, ...myCards])
+    ) {
       return true;
     }
     return false;
@@ -99,13 +117,13 @@ export class Player {
 
   private cardToValue(card: any): number {
     switch (card.rank) {
-      case 'A':
+      case "A":
         return 20;
-      case 'K':
+      case "K":
         return 15;
-      case 'Q':
+      case "Q":
         return 14;
-      case 'J':
+      case "J":
         return 12;
       default:
         return parseInt(card.rank, 10);
@@ -216,13 +234,13 @@ export class Player {
 
   private cardSuit(card: any): number {
     switch (card.suit) {
-      case 'spades':
+      case "spades":
         return 0;
-      case 'hearts':
+      case "hearts":
         return 1;
-      case 'diamonds':
+      case "diamonds":
         return 2;
-      case 'clubs':
+      case "clubs":
         return 3;
     }
   }

@@ -3,7 +3,7 @@ import * as express from 'express';
 import * as bodyParser from 'body-parser';
 import { Player } from './Player';
 
-const VERSION = 'Sziasztok3.7';
+const VERSION = 'Sziasztok4.0';
 
 const app = express();
 const player = new Player();
