@@ -1,9 +1,6 @@
 export class Player {
   public betRequest(gameState: any, betCallback: (bet: number) => void): void {
     const myPlayer = gameState.players[gameState.in_action];
-    // if (gameState.current_buy_in > 600) {
-    //   betCallback(0);
-    // } else {
     const bet = myPlayer ? myPlayer['bet'] : 0;
     const raise = this.calculateRaise(gameState);
     if (raise < 0) {
@@ -11,7 +8,6 @@ export class Player {
     } else {
       betCallback(gameState.current_buy_in - bet + raise);
     }
-    // }
   }
 
   public showdown(gameState: any): void {}
@@ -79,6 +75,18 @@ export class Player {
     } else {
       return -1;
     }
+  }
+
+  private shouldFold(bets: number[], allCards: number[], tableCards: number[], communityCards: number[], myCards: number[] ): boolean {
+    const maxBet = Math.max(...bets);
+    if (maxBet > 100
+        && !(this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards))
+        && !(this.detectPoker(allCards) && !this.detectPoker(tableCards))
+        && !(this.detectFlush([...communityCards, ...myCards]))
+        ) {
+      return true;
+    }
+    return false;
   }
 
   private cardToValue(card: any): number {
