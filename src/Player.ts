@@ -19,22 +19,14 @@ export class Player {
   public showdown(gameState: any): void { }
 
   public calculateRaise(gameState: any): number {
-    let raise = gameState.minimum_raise;
+    const minRaise = gameState.minimum_raise;
     const myPlayer = gameState.players[gameState.in_action];
     const myBet = this.calculateBet(myPlayer);
-    if (!raise || raise < myBet) {
-      raise = myBet;
+    if (minRaise && myBet > 0 && minRaise > myBet) {
+      return minRaise;
+    } else {
+      return myBet;
     }
-    if (raise > myPlayer.stack) {
-      raise = myPlayer.stack;
-    }
-    if (gameState.round > 0 && myBet === 1) {
-      raise = 0;
-    }
-    if (myBet < 0) {
-      raise = myBet;
-    }
-    return raise;
   }
 
   private calculateBet(myPlayer: any): number {
@@ -59,16 +51,12 @@ export class Player {
     const alldiff = Math.abs(diff - communityCardsDiff);
 
     if (diff === 0) {
-      return 50;
-    }
-    // if (value > 25) {
-    //   return 42;
-    // }
-    if (value < 10) {
+      return 1;
+    } else if (value > 25) {
+      return 0;
+    } else {
       return -1;
     }
-
-    return 1;
   }
 
   private cardToValue(card: any): number {
