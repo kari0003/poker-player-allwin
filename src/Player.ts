@@ -1,20 +1,24 @@
 export class Player {
   public betRequest(gameState: any, betCallback: (bet: number) => void): void {
     const myPlayer = gameState.players[gameState.in_action];
-    if (gameState.current_buy_in > 600) {
-      betCallback(0);
-    } else {
+    // if (gameState.current_buy_in > 600) {
+    //   betCallback(0);
+    // } else {
       const bet = myPlayer ? myPlayer["bet"] : 0;
-      betCallback(gameState.current_buy_in - bet + this.calculateRaise(gameState));
-    }
+      betCallback(
+        gameState.current_buy_in - bet + this.calculateRaise(gameState)
+      );
+    // }
   }
 
   public showdown(gameState: any): void {}
 
   public calculateRaise(gameState: any): number {
     let raise = gameState.minimum_raise;
-    if (!raise || raise < 20) {
-      raise = 20;
+    // const myPlayer = gameState.players[gameState.in_action];
+    const myBet = 20;
+    if (!raise || raise < myBet) {
+      raise = myBet;
     }
     return raise;
   }
@@ -24,13 +28,15 @@ export class Player {
   //   const communityCards = myPlayer["community_cards"];
   //   const communityCardsValues = communityCards.map(this.cardToValue);
   //   const value = this.cardToValue(myCards[0]) + this.cardToValue(myCards[1]);
-  //   const diff = Math.abs(this.cardToValue(myCards[0]) - this.cardToValue(myCards[1]));
+  //   const diff = Math.abs(
+  //     this.cardToValue(myCards[0]) - this.cardToValue(myCards[1])
+  //   );
 
-  //   if (diff <=1) {
+  //   if (diff <= 1) {
   //     return 50;
   //   }
-    
-  //   return 10;
+
+  //   return 20;
   // }
 
   // private cardToValue(card: any): number {

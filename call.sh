@@ -15,7 +15,16 @@ curl -d 'action=bet_request&game_state={
       "stack":1000,
       "status":"active",
       "bet":0,
-      "hole_cards":[],
+      "hole_cards": [
+              {
+                  "rank": "6",
+                  "suit": "hearts"
+              },
+              {
+                  "rank": "K",
+                  "suit": "spades"
+              }
+          ],
       "version":"Version name 2",
       "id":1
     }
@@ -29,5 +38,6 @@ curl -d 'action=bet_request&game_state={
   "dealer":0,
   "community_cards":[],
   "current_buy_in":0,
+  "in_action": 1,
   "pot":0
 }' http://localhost:1337
