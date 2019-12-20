@@ -1,19 +1,21 @@
 export class Player {
-  public betRequest(any: any, betCallback: (bet: number) => void): void {
-    const myPlayer = any.players[any.in_action];
-    // if (any.current_buy_in > 600) {
+  public betRequest(gameState: any, betCallback: (bet: number) => void): void {
+    const myPlayer = gameState.players[gameState.in_action];
+    // if (gameState.current_buy_in > 600) {
     //   betCallback(0);
     // } else {
     const bet = myPlayer ? myPlayer["bet"] : 0;
-    betCallback(any.current_buy_in - bet + this.calculateRaise(any));
+    betCallback(
+      gameState.current_buy_in - bet + this.calculateRaise(gameState)
+    );
     // }
   }
 
-  public showdown(any: any): void {}
+  public showdown(gameState: any): void {}
 
-  public calculateRaise(any: any): number {
-    let raise = any.minimum_raise;
-    const myPlayer = any.players[any.in_action];
+  public calculateRaise(gameState: any): number {
+    let raise = gameState.minimum_raise;
+    const myPlayer = gameState.players[gameState.in_action];
     const myBet = this.calculateBet(myPlayer);
     if (!raise || raise < myBet) {
       raise = myBet;
@@ -24,7 +26,7 @@ export class Player {
     return raise;
   }
 
-  private calculateBet(myPlayer: any): number {
+  private calculateBet(myPlayer: Player): number {
     const communityCards = myPlayer["community_cards"] || [];
     const communityCardsValues: number[] = communityCards.map(this.cardToValue);
     const communityCardsValue = communityCardsValues.reduce(
