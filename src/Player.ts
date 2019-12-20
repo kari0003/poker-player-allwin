@@ -21,7 +21,7 @@ export class Player {
   public calculateRaise(gameState: any): number {
     const minRaise = gameState.minimum_raise;
     const myPlayer = gameState.players[gameState.in_action];
-    const myBet = this.calculateBet(myPlayer);
+    const myBet = this.calculateBet(myPlayer, gameState);
     if (minRaise && myBet > 0 && minRaise > myBet) {
       return minRaise;
     } else {
@@ -29,7 +29,7 @@ export class Player {
     }
   }
 
-  private calculateBet(myPlayer: any): number {
+  private calculateBet(myPlayer: any, gameState: any): number {
     const communityCards = myPlayer["community_cards"] || [];
     const communityCardsValues: number[] = communityCards.map(this.cardToValue);
     const communityCardsValue = communityCardsValues.reduce(
@@ -52,7 +52,7 @@ export class Player {
 
     if (diff === 0) {
       return 1;
-    } else if (value > 25) {
+    } else if (value > 25 && gameState.pot <= myPlayer.stack) {
       return 0;
     } else {
       return -1;
