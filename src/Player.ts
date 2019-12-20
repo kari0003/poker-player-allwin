@@ -4,19 +4,20 @@ export class Player {
     if (gameState.current_buy_in > 600) {
       betCallback(0);
     } else {
-      betCallback(gameState.current_buy_in - myPlayer["bet"] + 50);
+      const bet = myPlayer ? myPlayer["bet"] : 0;
+      betCallback(gameState.current_buy_in - bet + this.calculateRaise(gameState));
     }
   }
 
   public showdown(gameState: any): void {}
 
-  // public calculateRaise(gameState: any): number {
-  //   let raise = gameState.minimum_raise;
-  //   if (raise < 50) {
-  //     raise = 50;
-  //   }
-  //   return raise;
-  // }
+  public calculateRaise(gameState: any): number {
+    let raise = gameState.minimum_raise;
+    if (!raise || raise < 50) {
+      raise = 50;
+    }
+    return raise;
+  }
 
   // private calculateBet(myPlayer: any): number {
   //   const myCards = myPlayer["hole_cards"];
