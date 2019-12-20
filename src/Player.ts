@@ -51,7 +51,11 @@ export class Player {
     const alldiff = Math.abs(diff - communityCardsDiff);
 
     if (diff === 0) {
-      return 1;
+      if (value >= 18) {
+        return 1;
+      } else {
+        return 0;
+      }
     } else if (value > 25 && gameState.pot <= myPlayer.stack) {
       return 0;
     } else {
