@@ -85,6 +85,23 @@ export class Player {
         return parseInt(card.rank, 10);
     }
   }
+
+  private detectFullHouse(cards: number[]): boolean {
+    let double = false;
+    let triple = false;
+    let tripleValue = 0;
+    cards.forEach((card, index) => {
+      if(cards[index+1] && card === cards[index+1]) {
+        if (!tripleValue && cards[index+2] && cards[index+2] == card) {
+          tripleValue = card;
+          triple = true;
+        } else if (card !== tripleValue) {
+          double = true;
+        }
+      }
+    });
+    return double && triple;
+  }
 }
 
 export default Player;
