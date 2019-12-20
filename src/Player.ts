@@ -23,7 +23,7 @@ export class Player {
     if (raise > myPlayer.stack) {
       raise = myPlayer.stack;
     }
-    if (gameState.bet_index > 0) {
+    if (gameState.bet_index > 0 && myBet === 1) {
       raise = 0;
     }
     return raise;
