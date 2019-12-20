@@ -58,9 +58,9 @@ export class Player {
     if (diff === 0) {
       return 50;
     }
-    if (value > 25) {
-      return 42;
-    }
+    // if (value > 25) {
+    //   return 42;
+    // }
     if (value < 10) {
       return -1;
     }
