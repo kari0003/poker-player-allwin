@@ -4,17 +4,24 @@ export class Player {
     if (gameState.current_buy_in > 600) {
       betCallback(0);
     } else {
-      betCallback(gameState.current_buy_in - myPlayer["bet"] + 4);
+      betCallback(gameState.current_buy_in - myPlayer["bet"] + this.calculateBet(myPlayer));
     }
   }
 
   public showdown(gameState: any): void {}
 
-  private areMyCardsOk(myPlayer: any): boolean {
+  private calculateBet(myPlayer: any): number {
     const myCards = myPlayer["hole_cards"];
-    const value = 0;
-    // switch(myCards)
-    return true;
+    const communityCards = myPlayer["community_cards"];
+    const communityCardsValues = communityCards.map(this.cardToValue);
+    const value = this.cardToValue(myCards[0]) + this.cardToValue(myCards[1]);
+    const diff = Math.abs(this.cardToValue(myCards[0]) - this.cardToValue(myCards[1]));
+
+    if (diff <=1) {
+      return 50;
+    }
+    
+    return 10;
   }
 
   private cardToValue(card: any): number {
