@@ -55,11 +55,11 @@ export class Player {
     const allValue = value + communityCardsValue;
     const alldiff = Math.abs(diff - communityCardsDiff);
 
-    if (this.detectFullHouse(allCards)) {
+    if (this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards)) {
       return myPlayer.stack;
-    } if (this.detectPoker(allCards)) {
+    } if (this.detectPoker(allCards) && !this.detectPoker(tableCards)) {
       return myPlayer.stack;
-    } else if (this.detectDrill(allCards)) {
+    } else if (this.detectDrill(allCards) && !this.detectDrill(tableCards)) {
       return 30;
     } else if (this.detectTwoPairs(allCards)) {
       return 30;
