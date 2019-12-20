@@ -61,6 +61,8 @@ export class Player {
     if (this.detectPoker(allCards) && !this.detectPoker(tableCards)) {
       return myPlayer.stack;
     } else if (this.detectFlush([...communityCards, ...myCards])) {
+       return 50;
+    } else if (this.detectNumberSeries(allCards) && !this.detectNumberSeries(tableCards)) {
       return 30;
     } else if (this.detectDrill(allCards) && !this.detectDrill(tableCards)) {
       return 30;
