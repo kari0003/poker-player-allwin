@@ -16,7 +16,7 @@ export class Player {
     // }
   }
 
-  public showdown(gameState: any): void {}
+  public showdown(gameState: any): void { }
 
   public calculateRaise(gameState: any): number {
     const minRaise = gameState.minimum_raise;
@@ -72,6 +72,32 @@ export class Player {
       default:
         return parseInt(card.rank, 10);
     }
+  }
+
+  private detectFullHouse(cards: number[]): boolean {
+    let double = false;
+    let triple = false;
+    let tripleValue = 0;
+    cards.forEach((card, index) => {
+      if (cards[index + 1] && card === cards[index + 1]) {
+        if (!tripleValue && cards[index + 2] && cards[index + 2] == card) {
+          tripleValue = card;
+          triple = true;
+        } else if (card !== tripleValue) {
+          double = true;
+        }
+      }
+    });
+    return double && triple;
+  }
+
+  private detectPoker(cards: number[]): boolean {
+    cards.forEach((card, index) => {
+      if (cards[index + 1] && cards[index + 2] && cards[index + 3] && card === cards[index + 1] && card === cards[index + 2] && card === cards[index + 3]) {
+        return true;
+      }
+    })
+    return false;
   }
 }
 
