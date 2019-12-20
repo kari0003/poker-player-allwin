@@ -61,8 +61,10 @@ export class Player {
       return myPlayer.stack;
     } else if (this.detectDrill(allCards)) {
       return 30;
+    } else if (this.detectTwoPairs(allCards)) {
+      return 30;
     } else if (diff === 0) {
-      if (value >= 18 && gameState.pot <= myPlayer.stack) {
+      if (value >= 18 && gameState.minimum_raise <= myPlayer.stack) {
         return 1;
       } else {
         return 0;
@@ -87,6 +89,20 @@ export class Player {
       default:
         return parseInt(card.rank, 10);
     }
+  }
+
+  private detectTwoPairs(cards: number[]): boolean {
+    const mapping = {};
+    cards.forEach((card) => {
+      mapping[card] = mapping[card] ? mapping[card] + 1 : 1;
+    });
+    let found = 0;
+    for (var x in mapping) {
+      if (mapping[x] >= 2) {
+        found++;
+      }
+    }
+    return found >= 2;
   }
 
   private detectDrill(cards: number[]): boolean {
