@@ -83,7 +83,7 @@ export class Player {
         return 30;
       }
     } else if (diff === 0) {
-      if (value >= 18 && gameState.minimum_raise <= myPlayer.stack) {
+      if (value >= 18 && gameState.minimum_raise <= myPlayer.stack && allCards.length < 7) {
         return 1;
       } else {
         return 0;
