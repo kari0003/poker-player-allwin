@@ -96,7 +96,22 @@ export class Player {
       if (cards[index + 1] && cards[index + 2] && cards[index + 3] && card === cards[index + 1] && card === cards[index + 2] && card === cards[index + 3]) {
         return true;
       }
-    })
+    });
+    return false;
+  }
+
+  private detectNumberSeries(cards: number[]): boolean {
+    function onlyUnique(value, index, self) { 
+      return self.indexOf(value) === index;
+    }
+    const unique = cards.filter(onlyUnique);
+    unique.forEach((card, index) => {
+      if (cards[index + 1] && cards[index + 2] && cards[index + 3] && cards[index + 4]) {
+        if (card === cards[index + 1] && card === cards[index + 2] && card === cards[index + 3] && card == cards[index + 4]){
+          return true;
+        }
+      }
+    });
     return false;
   }
 }
