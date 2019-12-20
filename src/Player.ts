@@ -197,7 +197,7 @@ export class Player {
   }
 
   private cardSuit(card: any): number {
-    switch (card.suite) {
+    switch (card.suit) {
       case 'spades':
         return 0;
       case 'hearts':

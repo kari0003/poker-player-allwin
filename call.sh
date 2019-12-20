@@ -17,11 +17,11 @@ curl -d 'action=bet_request&game_state={
       "bet":0,
       "hole_cards": [
               {
-                  "rank": "6",
+                  "rank": "3",
                   "suit": "spades"
               },
               {
-                  "rank": "K",
+                  "rank": "7",
                   "suit": "spades"
               }
           ],
@@ -32,31 +32,21 @@ curl -d 'action=bet_request&game_state={
   "tournament_id":"550d1d68cd7bd10003000003",
   "game_id":"550da1cb2d909006e90004b1",
   "round":0,
-  "community_cards": [
-    {
-        "rank": "8",
-        "suit": "hearts"
-    },
-    {
-        "rank": "K",
-        "suit": "spades"
-    }
-  ],
   "bet_index":0,
   "small_blind":10,
   "orbits":0,
   "dealer":0,
   "community_cards":[
     {
-        "rank": "8",
+        "rank": "Q",
         "suit": "spades"
     },
     {
-        "rank": "J",
+        "rank": "10",
         "suit": "spades"
     },
     {
-        "rank": "K",
+        "rank": "4",
         "suit": "spades"
     }
   ],
