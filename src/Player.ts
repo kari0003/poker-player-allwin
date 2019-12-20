@@ -83,7 +83,20 @@ export class Player {
         return 30;
       }
     } else if (diff === 0) {
-      if (value >= 18 && gameState.minimum_raise <= myPlayer.stack && allCards.length < 7) {
+      if (
+        allCards.length === 2 &&
+        value < 24 &&
+        (gameState.minimum_raise > myPlayer.stack / 2 ||
+          gameState.minimum_raise > 50 ||
+          gameState.pot > 1500)
+      ) {
+        return -1;
+      }
+      if (
+        value >= 18 &&
+        gameState.minimum_raise <= myPlayer.stack &&
+        allCards.length < 7
+      ) {
         return 1;
       } else {
         return 0;
@@ -116,8 +129,8 @@ export class Player {
   }
 
   private bleoff(gameState: any): boolean {
-    const player = gameState.players.find(p => p.name === 'player')
-    if (gameState.round === 3 && player.status === 'player') {
+    const player = gameState.players.find(p => p.name === "player");
+    if (gameState.round === 3 && player.status === "player") {
       if (Math.random() < 0.6) {
         return true;
       }
