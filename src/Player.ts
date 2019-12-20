@@ -129,14 +129,48 @@ export class Player {
   }
 
   private bleoff(gameState: any): boolean {
-    const player = gameState.players.find(p => p.name === "player");
-    if (gameState.round === 3 && player.status === "player") {
+    const player = gameState.players.find(p => p.name === 'player');
+    if (gameState.round === 3 && player.status === 'player') {
       if (Math.random() < 0.6) {
         return true;
       }
     }
     return false;
   }
+
+  private handleAllIn(
+    players: any,
+    bets:number[],
+    limit: number,
+    allCards: number[],
+    tableCards: number[],
+    community_cards: number[],
+    myCards: number[],
+    ): boolean {
+    const player = players.find(p => p.name === 'player');
+    const maxBet = Math.max(...bets);
+    if (player.status === 'active' && maxBet > limit && !(this.hasGoodStuff(allCards, tableCards, community_cards, myCards))) {
+      return false;
+    }
+    return true;
+  }
+
+  private hasGoodStuff(
+    allCards: number[],
+    tableCards: number[],
+    communityCards: number[],
+    myCards: number[]
+    ) {
+      if
+      (
+        (this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards)) ||
+        (this.detectPoker(allCards) && !this.detectPoker(tableCards)) ||
+        (this.detectFlush([...communityCards, ...myCards]))
+        ) {
+        return true;
+      }
+      return false;
+    }
 
   private cardToValue(card: any): number {
     switch (card.rank) {
