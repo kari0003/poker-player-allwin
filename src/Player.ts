@@ -28,13 +28,13 @@ export class Player {
     if (raise > myPlayer.stack) {
       raise = myPlayer.stack;
     }
-    if (gameState.bet_index > 0 && myBet === 1) {
+    if (gameState.round > 0 && myBet === 1) {
       raise = 0;
     }
     return raise;
   }
 
-  private calculateBet(myPlayer: Player): number {
+  private calculateBet(myPlayer: any): number {
     const communityCards = myPlayer["community_cards"] || [];
     const communityCardsValues: number[] = communityCards.map(this.cardToValue);
     const communityCardsValue = communityCardsValues.reduce(
