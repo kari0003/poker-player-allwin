@@ -63,7 +63,15 @@ export class Player {
     } else if (this.detectDrill(allCards) && !this.detectDrill(tableCards)) {
       return 30;
     } else if (this.detectTwoPairs(allCards)) {
-      return 30;
+      if (diff === 0) {
+        if (value >= 18 && gameState.minimum_raise <= myPlayer.stack) {
+          return 30;
+        } else {
+          return 0;
+        }
+      } else {
+        return 30;
+      }
     } else if (diff === 0) {
       if (value >= 18 && gameState.minimum_raise <= myPlayer.stack) {
         return 1;
