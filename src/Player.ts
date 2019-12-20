@@ -59,8 +59,10 @@ export class Player {
       return myPlayer.stack;
     } if (this.detectPoker(allCards)) {
       return myPlayer.stack;
+    } else if (this.detectDrill(allCards)) {
+      return 30;
     } else if (diff === 0) {
-      if (value >= 18) {
+      if (value >= 18 && gameState.pot <= myPlayer.stack) {
         return 1;
       } else {
         return 0;
@@ -85,6 +87,20 @@ export class Player {
       default:
         return parseInt(card.rank, 10);
     }
+  }
+
+  private detectDrill(cards: number[]): boolean {
+    const mapping = {};
+    cards.forEach((card) => {
+      mapping[card] = mapping[card] ? mapping[card] + 1 : 1;
+    });
+    let found = false;
+    for (var x in mapping) {
+      if (mapping[x] >= 3) {
+        found = true;
+      }
+    }
+    return found;
   }
 
   private detectFullHouse(cards: number[]): boolean {
