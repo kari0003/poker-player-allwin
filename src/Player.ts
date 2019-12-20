@@ -57,8 +57,11 @@ export class Player {
 
     if (this.detectFullHouse(allCards) && !this.detectFullHouse(tableCards)) {
       return myPlayer.stack;
-    } if (this.detectPoker(allCards) && !this.detectPoker(tableCards)) {
+    }
+    if (this.detectPoker(allCards) && !this.detectPoker(tableCards)) {
       return myPlayer.stack;
+    } else if (this.detectFlush([...communityCards, ...myCards])) {
+      return 30;
     } else if (this.detectDrill(allCards) && !this.detectDrill(tableCards)) {
       return 30;
     } else if (this.detectTwoPairs(allCards)) {
@@ -93,7 +96,7 @@ export class Player {
 
   private detectTwoPairs(cards: number[]): boolean {
     const mapping = {};
-    cards.forEach((card) => {
+    cards.forEach(card => {
       mapping[card] = mapping[card] ? mapping[card] + 1 : 1;
     });
     let found = 0;
@@ -107,7 +110,7 @@ export class Player {
 
   private detectDrill(cards: number[]): boolean {
     const mapping = {};
-    cards.forEach((card) => {
+    cards.forEach(card => {
       mapping[card] = mapping[card] ? mapping[card] + 1 : 1;
     });
     let found = false;
@@ -154,18 +157,43 @@ export class Player {
 
   private detectNumberSeries(cards: number[]): boolean {
     let hasSeries = false;
-    function onlyUnique(value, index, self) { 
+    function onlyUnique(value, index, self) {
       return self.indexOf(value) === index;
     }
     const unique = cards.filter(onlyUnique);
     unique.forEach((card, index) => {
-      if (cards[index + 1] && cards[index + 2] && cards[index + 3] && cards[index + 4]) {
-        if ((card === cards[index + 1] - 1) && (card === cards[index + 2] -2) && (card === cards[index + 3] - 3) && (card === cards[index + 4]-4)){
+      if (
+        cards[index + 1] &&
+        cards[index + 2] &&
+        cards[index + 3] &&
+        cards[index + 4]
+      ) {
+        if (
+          card === cards[index + 1] - 1 &&
+          card === cards[index + 2] - 2 &&
+          card === cards[index + 3] - 3 &&
+          card === cards[index + 4] - 4
+        ) {
           hasSeries = true;
         }
       }
     });
     return hasSeries;
+  }
+
+  private detectFlush(cardsWithSuite = []) {
+    const cards = this.orderCards(cardsWithSuite.map(this.cardSuit));
+    const mapping = {};
+    cards.forEach(card => {
+      mapping[card] = mapping[card] ? mapping[card] + 1 : 1;
+    });
+    let found = false;
+    for (var x in mapping) {
+      if (mapping[x] >= 5) {
+        found = true;
+      }
+    }
+    return found;
   }
 
   private cardSuit(card: any): number {

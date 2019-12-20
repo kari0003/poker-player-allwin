@@ -18,7 +18,7 @@ curl -d 'action=bet_request&game_state={
       "hole_cards": [
               {
                   "rank": "6",
-                  "suit": "hearts"
+                  "suit": "spades"
               },
               {
                   "rank": "K",
@@ -49,7 +49,11 @@ curl -d 'action=bet_request&game_state={
   "community_cards":[
     {
         "rank": "8",
-        "suit": "hearts"
+        "suit": "spades"
+    },
+    {
+        "rank": "J",
+        "suit": "spades"
     },
     {
         "rank": "K",
