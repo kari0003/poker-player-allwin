@@ -50,10 +50,12 @@ export class Player {
     const allValue = value + communityCardsValue;
     const alldiff = Math.abs(diff - communityCardsDiff);
 
-    if (diff <= 1) {
+    if (diff === 0) {
       return 50;
     }
-    // if (value > )
+    if (value > 25) {
+      return 42;
+    }
 
     return 1;
   }
